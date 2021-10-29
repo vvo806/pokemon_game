@@ -1,0 +1,431 @@
+"""making a pokemon game"""
+import random
+
+class User(object):
+    def __init__(self, name):
+        self.name = name
+        self.pokemon = []
+        self.attacking_pokemon = None
+
+    def set_pokemon(self, set_of_pokemon):
+        self.pokemon = set_of_pokemon
+
+    def list_pokemon(self):
+        print(f"{self.name}'s Pokemon:")
+        print(f"    1. {self.pokemon[0].name} \n    2. {self.pokemon[1].name} \n    3. {self.pokemon[2].name}")
+
+    def switch(self, pokemon_number):
+        self.attacking_pokemon = self.pokemon[pokemon_number - 1]
+        print (f"{self.name} have chosen {self.attacking_pokemon} as the attacking pokemon")
+
+    # attack method
+    def attack(self, enemy):
+        self.attacking_pokemon.list_attacks()
+        attack_choice = int(input("Which attack do you choose? "))
+        print (f"{self.name} chose {attack_choice} as their technique.")
+        self.attack_enemy(attack_choice, enemy)#this is where we stop
+        total_damage = player
+
+    def heal(self):
+        pass
+
+    def is_end_game(comp,faint):
+        game_over = False
+        if comp == True:
+            if faint == 2:
+                game_over = True
+                return game_over
+            else:
+                return game_over
+        else:
+            if faint == 2:
+                game_over = True
+                return game_over
+            else:
+                return game_over
+
+    # prints out the attack names to choose from
+    def print_attacks(self):
+        num = 1
+        for attack in self.attacking_pokemon.set_attacks():
+            print(f"{num}: {attack}")
+            num += 1
+
+    # def get_attack(self, attack_name, enemy):
+    #     self.attack_name = attack_name
+    #     self.enemy = enemy
+
+    def options(self):
+        print(f"1. Attack \n2. Heal \n3. Switch")
+
+class Computer(User):
+    def play_turn(self, enemy):
+        self.enemy = enemy
+
+    def set_pokemon(self, set_of_pokemon):
+        self.set_of_pokemon = set_of_pokemon
+
+    def list_pokemon(self):
+        print(f"{self.name}'s Pokemon:")
+        print(f"    {self.pokemon[0].name} \n    {self.pokemon[1].name} \n    {self.pokemon[2].name}")
+
+    def attack(self, enemy):
+        pass
+
+    #user_choice = random.sample (list_pokemon, 3)
+
+class Pokemon(object):
+    def __init__(self, hp, max_ap, name):
+        self.hp = hp
+        self.max_ap = max_ap
+        self.name = name
+        self.attacks = self.set_attacks()
+        self.pokemon_type = self.set_type()
+
+    def list_attacks(self):
+        num = 1
+        for attack in self.attacks:
+            print(f"{num}. {attack}.")
+            num += 1
+    """
+    def fight(self, enemy):
+        #both pokemon will fight
+        #fight info
+        print("ITS BATTLE TIME!")
+        print(f"{self.name}")
+        print(f"HP: {self.hp}")
+        print(f"AP: {self.max_ap}")
+        print(f"TYPE: {self.pokemon_type}")
+        print(f"ATTACK SKILL: {self.attacks}")
+
+        print("VS")
+
+        print(f"{enemy.name}")
+        print(f"HP: {enemy.hp}")
+        print(f"AP: {enemy.max_ap}")
+        print(f"TYPE: {enemy.pokemon_type}")
+        print(f"ATTACK SKILL: {enemy.attacks}")
+
+        while (self.hp > 0) and (enemy.hp > 0):
+            print(f"{self.name} has {self.hp} HP")
+            print(f"{enemy.name} has {enemy.hp} HP")
+
+            switch = input("Do you want to switch Pokemon? (Y/N): ")
+            if switch == "Y":
+                input("Which pokemon will you use? Choose the number: ")
+                pass
+            if switch == "N":
+                input("Alright, let's keep going!")
+                pass
+    """
+    # list out attack choices
+    def get_attacks(self):
+        num = 1
+        for attack in self.attacks:
+            print(f"{num}. {attack} - AP: {self.attacks[attack][0]}, ACC: {self.attacks[attack][1]}")
+            num += 1
+
+    def add_attacks(self, attack_dictionary):
+        self.attacks = attack_dictionary
+
+    def take_damage(self, damage_amount):
+        self.hp -= damage_amount
+        if self.hp < 0:
+            self.hp = 0
+
+        else:
+            pass
+            '''print(f'{self.name} has {self.hp} hp left.')'''
+            
+
+    def heal(self,pokemon,computer):
+        if computer == True:
+            pokemon.hp += 20
+            print(f"The computer's hp is now {pokemon.hp}")
+        else:
+            pokemon.hp += 20
+            print(f"You now have {pokemon.hp} HP!")
+        
+
+
+class GrassType(Pokemon):
+    def set_type(self):
+        return 'Grass'
+
+    def set_attacks(self):
+        return {'Leaf Storm': [130, 90], 'Mega Drain': [50, 100], 'Razor Leaf': [55, 95]}
+    # def set_attacks(self):
+    #     attacks = {'Leaf Storm': [130, 90], 'Mega Drain': [50, 100], 'Razor Leaf': [55, 95]}
+    #     if comp == True:
+    #         attack_r = random.randint(1,3)
+    #         return attacks[attack_r]
+    #     else:
+    #         print(attacks)
+    #         power = int(input("Which attack technique do you want to use? (Type number): "))
+    #         print (f"You will use {attacks[power]} power to attack!")
+    #         return attacks[power]
+    
+    def attack_enemy(self,attack,enemy):
+        miss = random.randint(1,100)
+        if self.attacks[attack][1] < miss:
+            print('Your Pokemon has missed')
+            return 0
+        else:
+            if isinstance(enemy,WaterType):
+                damage = self.attacks[attack][0] * 1.5
+                return damage
+            elif isinstance(enemy,FireType):
+                damage = self.attacks[attack][0] * 0.5
+                return damage
+            else:
+                damage = self.attacks[attack][0]
+                return damage
+
+
+    def get_attack_power(self, attack, enemy):
+        # if enemy was water type
+        if isinstance(enemy, WaterType):
+            self.hp -= attack
+            print(f"A water pokemon attack with {attack} AP!")
+            print (f"Because water does less damage to grass, it only inflicts {self.hp}")
+
+        # if enemy was fire type
+        elif isinstance(enemy, FireType):
+            self.hp -= attack
+            print(f"A fire pokemon attack with {attack} AP!")
+            print (f"Because fire does more damage to grass, it inflicts {self.hp}")
+
+    def __str__(self):
+        return f'{self.name}, TYPE:Grass, HP:{self.hp}, AP:{self.max_ap}'
+
+class WaterType(Pokemon):
+    def set_attacks(self):
+        return {'Bubble': [40, 100], 'Hydro Pump': [185, 30], 'Surf': [70, 90]}
+    # def set_attacks(self,comp):
+    #     attacks = {1: {'Bubble': [40, 100]}, 
+    #     2: {'Hydro Pump': [185, 30]},
+    #     3: {'Surf': [70, 90]}}
+        
+    #     if comp == True:
+    #         attack_r = random.randint(1,3)
+    #         return attacks[attack_r]
+    #     else:
+    #         print(attacks)
+    #         power = int(input("Which attack technique do you want to use? (Type number): "))
+    #         print (f"You will use {attacks[power]} power to attack!")
+    #         return(attacks[power])}}
+
+    def attack_enemy(self,attack,enemy):
+        miss = random.randint(1,100)
+        if self.attacks[attack][1] < miss:
+            print('Your Pokemon has missed')
+            return 0
+        else:
+            if isinstance(enemy,GrassType):
+                damage = self.attacks[attack][0] * 0.5
+                return damage
+            elif isinstance(enemy,FireType):
+                damage = self.attacks[attack][0] * 1.5
+                return damage
+            else:
+                damage = self.attacks[attack][0]
+                return damage
+
+    def set_type(self):
+        return 'Water'
+
+    def get_attack_power(self, attack, enemy):
+        # if enemy was fire type
+        if isinstance(enemy, FireType):
+            self.hp -= attack * 0.5
+            print(f"A fire pokemon attack with {attack} AP!")
+            print (f"Because fire does less damage to water, it only inflicts {self.hp}")
+
+        # if enemy was grass type
+        elif isinstance(enemy, GrassType):
+            self.hp -= attack * 1.5
+            print(f"A grass pokemon attack with {attack} AP!")
+            print (f"Because grass does more damage to water, it inflicts {self.hp}")
+
+
+    def __str__(self):
+        return f'{self.name}, TYPE:Water, HP:{self.hp}, AP:{self.max_ap}'
+
+class FireType(Pokemon):
+    def set_type(self):
+        return 'Fire'
+
+    def set_attacks(self):
+        return {'Ember': [60, 100], 'Fire Punch': [85, 80], 'Flame Wheel': [70, 90]}
+
+    # def set_attacks(self,comp):
+    #     attacks = {1: {}, 
+    #     2: {'Fire Punch': [85, 80]}, 
+    #     3: {'Flame Wheel': [70, 90]}}
+    #     if comp == True:
+    #         attack_r = random.randint(1,3)
+    #         return attacks[attack_r]
+    #     else:
+    #         print(attacks)
+    #         power = int(input("Which attack technique do you want to use? (Type number): "))
+    #         print (f"You will use {attacks[power]} power to attack!")
+    #         return(attacks[power])
+
+    def attack_enemy(self,attack, enemy):
+
+        miss = random.randint(1,100)
+        if self.attacks[attack][1] < miss:
+            print('Your Pokemon has missed')
+            return 0
+        else:
+            if isinstance(enemy,GrassType,attack):
+                damage = self.attacks[attack][0] * 1.5
+                return damage
+            elif isinstance(enemy,WaterType):
+                damage = self.attacks[attack][0] * 0.5
+                return damage
+            else:
+                damage = self.attacks[attack][0]
+                return damage
+        
+    def get_attack_power(self, attack, enemy):
+        # if enemy was water type 
+        if isinstance(enemy, WaterType):
+            self.hp -= attack
+            print(f"A water pokemon attack with {attack} AP!")
+            print (f"Because water does more damage to fire, it inflicts {self.hp}")
+        
+        # if enemy was grass type
+        elif isinstance(enemy, GrassType):
+            self.hp -= attack
+            print(f"A grass pokemon attack with {attack} AP!")
+            print (f"Because grass does less damage to fire, it inflicts {self.hp}")
+    
+    def __str__(self):
+        return f'{self.name}, TYPE:Fire, HP:{self.hp}, AP:{self.max_ap}'
+
+def game_loop():
+    pokemon_list = [
+        GrassType(60, 40, 'Bulbasoar'),
+        GrassType(40, 60, 'Bellsprout'),
+        GrassType(50, 50, 'Oddish'),
+        FireType(25, 70, 'Charmainder'),
+        FireType(30, 50, 'Ninetails'),
+        FireType(40, 60, 'Ponyta'),
+        WaterType(80, 20, 'Squirtle'),
+        WaterType(70, 40, 'Psyduck'),
+        WaterType(50, 50, 'Polywag')]
+
+    #name
+    u_faint = 0
+    c_faint = 0
+    u_name = input('Name: ')
+    player = User(u_name)
+    print(f"Welcome {u_name}, let's play Pokemon!")
+    print()
+    # whole list of Pokemon choices
+    print('Choose 3 of the following Pokemon.')
+    print()
+    num = 1
+    for pokemon in pokemon_list:
+        print(f'{num}: {pokemon}')
+        print()
+        num += 1
+    user_choice = []
+    for i in range(3):
+        choice = int(input(f'Choose your pokemon #{i+1} '))
+        user_choice.append(pokemon_list[choice-1])
+
+    #printing your 3 Pokemons
+    print()
+    player.set_pokemon(user_choice)
+    player.list_pokemon()
+
+    print('You have decided to go on an adventure with your new Pokemon!')
+    print()
+    pause = input("(Hit enter to continue!)")
+
+    print()
+
+    
+    u_pokemon = int(input('Which pokemon do you want to use to fight out of your pokemon? (Type number): '))
+    print(f"You have chosen {user_choice[u_pokemon]}")
+    player.attacking_pokemon = player.pokemon[u_pokemon - 1]
+
+    print(f"youre attacking pokemon: {player.attacking_pokemon}")
+    
+
+    #computer's pokemon
+    comp_name = input('What do you want to name your opponent?: ')
+    computer = Computer(comp_name)
+    for pokemon in user_choice:
+        pokemon_list.remove(pokemon)
+        
+    comp_choice = random.sample(pokemon_list, 3) #random pokemons selected
+    computer.pokemon = comp_choice
+    computer.list_pokemon() #print computer's pokemons
+    c_pokemon = random.randint(0,2)
+    computer.switch(c_pokemon + 1) #computer's random attacking pokemon
+    comp_tech = computer.attacking_pokemon
+
+    #Attack/Heal/Switch
+    game_over = False
+    while game_over == False:
+        print()
+        player.options()
+        user_input = int(input('What option do you want to choose? '))
+        print()
+        chosen = False
+        while chosen == False:
+            if player.attacking_pokemon.hp == 0:
+                print('Your Pokemon has fainted...')
+                if u_faint == 2:
+                    print(f'You have lost to {comp_name}.')
+                    game_over = True
+                    break
+                else:
+                    user_first = int(input('Which pokemon do you want to use as your attacking pokemon? (Type number from list): '))
+                    player.switch(user_first)
+                    u_faint += 1
+                    chosen = True
+                
+            else:
+                if user_input == 1: #Attack
+                    player.attack(computer.attacking_pokemon)
+                    
+
+                elif user_input == 2: #Heal
+                    Pokemon.heal('lel',u_pokemon,False)
+                    print()
+                    chosen = True
+
+                elif user_input == 3: #Switch pokemon/attack technique
+                    #player chooses which pokemon to attack
+                    user_first = int(input('Which pokemon do you want to use as your attacking pokemon? (Type number from list): '))
+                    player.switch(user_first)
+                    chosen = True
+
+            #computer turn
+            if comp_tech.hp == 0:
+                if c_faint == 2:
+                    print(f'{u_name} has beaten {comp_name}!')
+                    game_over = True
+                    break
+                else:
+                    c_pokemon = random.randint(0,2)
+                    computer.switch(c_pokemon + 1)
+                    comp_tech = computer.attacking_pokemon
+                    c_faint += 1
+
+            else:
+                if comp_tech.hp < 21:
+                    computer.heal()
+                else:
+                    attack_index = random.randint(0, 2)
+                    attack_name_list = []
+                    for attack in computer.attacking_pokemon.attacks:
+                        attack_name_list.append(attack)
+
+                    computer.attacking_pokemon.attack_enemy(attack_name_list[attack_index], player.attacking_pokemon)
+
+game_loop()
